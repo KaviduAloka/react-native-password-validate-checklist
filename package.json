@@ -1,6 +1,6 @@
 {
   "name": "react-native-password-validate-checklist",
-  "version": "0.0.1",
+  "version": "0.0.11",
   "description": "Customized password validating checklist",
   "main": "src/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/KaviduAloka/react-native-password-validation-checklist.git"
+    "url": "git+ssh://git@github.com/KaviduAloka/react-native-password-validate-checklist.git"
   },
   "keywords": [
     "react-native",
@@ -22,7 +22,7 @@
   "author": "KaviduAloka",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/KaviduAloka/react-native-password-validation-checklist/issues"
+    "url": "https://github.com/KaviduAloka/react-native-password-validate-checklist/issues"
   },
-  "homepage": "https://github.com/KaviduAloka/react-native-password-validation-checklist#readme"
+  "homepage": "https://github.com/KaviduAloka/react-native-password-validate-checklist#readme"
 }
