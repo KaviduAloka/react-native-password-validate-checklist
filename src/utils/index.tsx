@@ -1,9 +1,10 @@
-import {VALIDATION_RULES_KEYS} from '../';
-export const isNumeric = arg => {
+import {PossibleRuleType, RuleType} from '../types';
+
+export const isNumeric = (arg: any): boolean => {
   return !isNaN(arg) && !isNaN(parseFloat(arg));
 };
 
-export const checkValidationRules = validationRules => {
+export const checkValidationRules = (validationRules: Array<RuleType>) => {
   let checkPassed = true;
 
   //  checking rules array length
@@ -11,10 +12,20 @@ export const checkValidationRules = validationRules => {
     //  checking ruleValue in MIN_LENGTH and MAX_LENGTH
     validationRules.every(rule => {
       //  checking key validity
-      if (Object.values(VALIDATION_RULES_KEYS).includes(rule.key)) {
+      if (
+        [
+          'MIN_LENGTH',
+          'MAX_LENGTH',
+          'SPECIAL_CHARS',
+          'NUMERIC',
+          'UPPERCASE_LETTER',
+          'LOWERCASE_LETTER',
+          'PASSWORDS_MATCH',
+        ].includes(rule.key)
+      ) {
         switch (rule.key) {
-          case VALIDATION_RULES_KEYS.MIN_LENGTH:
-          case VALIDATION_RULES_KEYS.MAX_LENGTH:
+          case 'MIN_LENGTH':
+          case 'MAX_LENGTH':
             if (isNumeric(rule.ruleValue)) {
               return true; //  continue loop in `every`
             } else {
@@ -37,47 +48,54 @@ export const checkValidationRules = validationRules => {
   return checkPassed;
 };
 
-export const getDefaultRuleLabel = (ruleKey, ruleValue) => {
+export const getDefaultRuleLabel = (
+  ruleKey: PossibleRuleType,
+  ruleValue: number,
+): string => {
   switch (ruleKey) {
-    case VALIDATION_RULES_KEYS.MIN_LENGTH:
+    case 'MIN_LENGTH':
       return `Password contains more than ${ruleValue} characters`;
-    case VALIDATION_RULES_KEYS.MAX_LENGTH:
+    case 'MAX_LENGTH':
       return `Password does not contain more than ${ruleValue} characters`;
-    case VALIDATION_RULES_KEYS.UPPERCASE_LETTER:
+    case 'UPPERCASE_LETTER':
       return 'Password contains at least one uppercase letter';
-    case VALIDATION_RULES_KEYS.LOWERCASE_LETTER:
+    case 'LOWERCASE_LETTER':
       return 'Password contains at least one lowercase letter';
-    case VALIDATION_RULES_KEYS.NUMERIC:
+    case 'NUMERIC':
       return 'Password contains at least one numeric';
-    case VALIDATION_RULES_KEYS.SPECIAL_CHARS:
+    case 'SPECIAL_CHARS':
       return 'Password contains at least one special character';
-    case VALIDATION_RULES_KEYS.PASSWORDS_MATCH:
+    case 'PASSWORDS_MATCH':
       return 'Entered passwords are matching';
   }
 };
 
-export const getValidation = (rule, newPassword, confirmPassword) => {
+export const getValidation = (
+  rule: RuleType,
+  newPassword: string,
+  confirmPassword: string,
+): boolean => {
   switch (rule.key) {
-    case VALIDATION_RULES_KEYS.MIN_LENGTH:
+    case 'MIN_LENGTH':
       return newPassword.length >= rule.ruleValue;
-    case VALIDATION_RULES_KEYS.MAX_LENGTH:
+    case 'MAX_LENGTH':
       return newPassword.length > 0 && newPassword.length <= rule.ruleValue;
-    case VALIDATION_RULES_KEYS.LOWERCASE_LETTER:
+    case 'LOWERCASE_LETTER':
       return /[a-z]/.test(newPassword);
-    case VALIDATION_RULES_KEYS.UPPERCASE_LETTER:
+    case 'UPPERCASE_LETTER':
       return /[A-Z]/.test(newPassword);
-    case VALIDATION_RULES_KEYS.NUMERIC:
+    case 'NUMERIC':
       return /\d/.test(newPassword);
-    case VALIDATION_RULES_KEYS.SPECIAL_CHARS:
+    case 'SPECIAL_CHARS':
       return /[-!$%^&*()_+|~=`{}[\]:/;<>?,.@#]/.test(newPassword);
-    case VALIDATION_RULES_KEYS.PASSWORDS_MATCH:
+    case 'PASSWORDS_MATCH':
       return newPassword.trim().length > 0 && newPassword === confirmPassword;
   }
 };
 
-export function debounce(func, timeout = 300) {
-  let timer;
-  return (...args) => {
+export function debounce(func: Function, timeout = 300) {
+  let timer: number;
+  return (...args: any) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       func.apply(this, args);

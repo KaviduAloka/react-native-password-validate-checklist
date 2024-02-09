@@ -1,7 +1,14 @@
-import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, Image, Text, View} from 'react-native';
-
+import {
+  FlatList,
+  Image,
+  ImageURISource,
+  Text,
+  View,
+  TextStyle,
+  ImageStyle,
+  ViewStyle,
+} from 'react-native';
 import styles from './styles';
 import {
   checkValidationRules,
@@ -9,31 +16,36 @@ import {
   getDefaultRuleLabel,
   getValidation,
 } from './utils';
+import {RuleType} from './types';
 
-const VALIDATION_RULES_KEYS = {
-  MIN_LENGTH: 'MIN_LENGTH',
-  MAX_LENGTH: 'MAX_LENGTH',
-  SPECIAL_CHARS: 'SPECIAL_CHARS',
-  NUMERIC: 'NUMERIC',
-  UPPERCASE_LETTER: 'UPPERCASE_LETTER',
-  LOWERCASE_LETTER: 'LOWERCASE_LETTER',
-  PASSWORDS_MATCH: 'PASSWORDS_MATCH',
+type Props = {
+  newPassword: string;
+  confirmPassword: string;
+  onPasswordValidateChange: (data: boolean) => void;
+  validationRules: Array<RuleType>;
+  iconSuccessSource?: ImageURISource;
+  iconErrorSource?: ImageURISource;
+  containerStyle?: ViewStyle;
+  labelStyle?: TextStyle;
+  iconStyle?: ImageStyle;
 };
 
-const PasswordValidate = ({
+type CustomRuleType = RuleType & {validation: boolean; label: string};
+
+const PasswordValidate: React.FC<Props> = ({
   newPassword,
   confirmPassword,
   onPasswordValidateChange,
   validationRules,
-  iconSuccessSource,
-  iconErrorSource,
-  containerStyle,
-  labelStyle,
-  iconStyle,
+  iconSuccessSource = require('./assets/success/success.png'),
+  iconErrorSource = require('./assets/error/error.png'),
+  containerStyle = {},
+  labelStyle = {},
+  iconStyle = {},
 }) => {
-  const [rulesList, setRulesList] = useState([]);
+  const [rulesList, setRulesList] = useState<Array<CustomRuleType>>([]);
 
-  const validatePasswords = list => {
+  const validatePasswords = (list: Array<CustomRuleType>) => {
     //  check if any field is false
     const allSuccess =
       list.some(object => object.validation === false) === false;
@@ -41,7 +53,6 @@ const PasswordValidate = ({
     onPasswordValidateChange(allSuccess);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceValidationCheckFunc = useCallback(
     debounce(validatePasswords),
     [],
@@ -56,13 +67,13 @@ const PasswordValidate = ({
   }, [newPassword, confirmPassword, validationRules]);
 
   const setFieldsList = () => {
-    const list = [];
+    const list: Array<CustomRuleType> = [];
 
     validationRules.forEach(rule => {
       const object = {
         ...rule,
         validation: getValidation(rule, newPassword, confirmPassword),
-        label: rule.label || getDefaultRuleLabel(rule.key, rule.ruleValue),
+        label: rule.label || getDefaultRuleLabel(rule.key, rule.ruleValue || 0),
       };
 
       list.push(object);
@@ -73,7 +84,7 @@ const PasswordValidate = ({
     debounceValidationCheckFunc(list);
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({item}: {item: CustomRuleType}) => (
     <View style={styles.field}>
       {item.validation ? (
         <Image style={[styles.icon, iconStyle]} source={iconSuccessSource} />
@@ -85,7 +96,7 @@ const PasswordValidate = ({
     </View>
   );
 
-  const keyExtractor = (item, index) => `${index}`;
+  const keyExtractor = (item: any, index: number) => `${index}`;
 
   return (
     <View style={[styles.wrapper, containerStyle]}>
@@ -98,34 +109,5 @@ const PasswordValidate = ({
     </View>
   );
 };
-
-PasswordValidate.propTypes = {
-  newPassword: PropTypes.string.isRequired,
-  confirmPassword: PropTypes.string.isRequired,
-  onPasswordValidateChange: PropTypes.func.isRequired,
-  validationRules: PropTypes.arrayOf(
-    PropTypes.shape({
-      key: PropTypes.string.isRequired,
-      label: PropTypes.string,
-      ruleValue: PropTypes.any,
-    }),
-  ).isRequired,
-
-  containerStyle: PropTypes.object,
-  labelStyle: PropTypes.object,
-  iconStyle: PropTypes.object,
-  iconSuccessSource: PropTypes.any,
-  iconErrorSource: PropTypes.any,
-};
-
-PasswordValidate.defaultProps = {
-  containerStyle: {},
-  labelStyle: {},
-  iconStyle: {},
-  iconSuccessSource: require('./assets/success/success.png'),
-  iconErrorSource: require('./assets/error/error.png'),
-};
-
-export {VALIDATION_RULES_KEYS};
 
 export default PasswordValidate;
