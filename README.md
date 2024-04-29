@@ -1,69 +1,64 @@
 # react-native-password-validate-checklist
 
-A customizable component which can add rules to a password and show the status of each validation.
+A customizable component that validates passwords based on specific rules and displays a checklist indicating the validation status.
 
 ## Example
 
-![ezgif com-video-to-gif](https://user-images.githubusercontent.com/31509440/220936959-3800bf38-e446-4b51-bb21-d83e88168e30.gif)
-
-<br />
+![Password Validation Example](https://user-images.githubusercontent.com/31509440/220936959-3800bf38-e446-4b51-bb21-d83e88168e30.gif)
 
 ## Installation
 
-`yarn add react-native-password-validate-checklist`
-<br /><br />
-`npm install react-native-password-validate-checklist`
-<br />
+- Using Yarn: `yarn add react-native-password-validate-checklist`
+- Using npm: `npm install react-native-password-validate-checklist`
 
 ## Usage
 
-```
-import React, {useState} from 'react';
-import {Text, TextInput, View} from 'react-native';
-import PasswordValidate from 'react-native-password-validation-checklist';
+```jsx
+import React, { useState } from "react";
+import { Text, TextInput, View } from "react-native";
+import PasswordValidate from "react-native-password-validate-checklist";
 
-const Test: React.FC = () => {
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
+const Test = () => {
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
   const [validated, setValidated] = useState(false);
 
   return (
     <View>
       <TextInput
-        onChangeText={text => setPassword1(text)}
+        placeholder="Enter new password"
+        onChangeText={setPassword1}
       />
       <TextInput
-        onChangeText={text => setPassword2(text)}
+        placeholder="Confirm new password"
+        onChangeText={setPassword2}
       />
 
       <PasswordValidate
         newPassword={password1}
         confirmPassword={password2}
         validationRules={[
-          {
-            key: 'MIN_LENGTH',
-            ruleValue: 9,
-            label: 'Should contain more than 9 characters',
-          },
-          {
-            key: 'MAX_LENGTH',
-            ruleValue: 15,
-            label: 'අක්ෂර 15 කට වඩා තිබිය නොහැක',
-          },
-          {key: 'LOWERCASE_LETTER'},
-          {key: 'UPPERCASE_LETTER'},
-          {key: 'NUMERIC'},
-          {key: 'PASSWORDS_MATCH'},
-          {key: 'SPECIAL_CHARS'},
+          { key: "MIN_LENGTH", ruleValue: 9, label: "Minimum 9 characters" },
+          { key: "MAX_LENGTH", ruleValue: 15, label: "Maximum 15 characters" },
+          { key: "LOWERCASE_LETTER" },
+          { key: "UPPERCASE_LETTER" },
+          { key: "NUMERIC" },
+          { key: "SPECIAL_CHARS" },
+          { key: "PASSWORDS_MATCH" },
         ]}
-        onPasswordValidateChange={validatedBoolean =>
-          setValidated(validatedBoolean)
-        }
+        onPasswordValidateChange={setValidated}
+        imageSource={{
+          Success: require("./assets/success/success.png"),
+          Error: require("./assets/error/error.png"),
+        }}
+        isImage={true}
+        iconComponent={{
+          Success: <Text>✔</Text>,
+          Error: <Text>✖</Text>,
+        }}
       />
 
-      <Text>
-        {validated ? 'PASSWORD VALIDATED' : 'NOT VALID PASSWORD'}
-      </Text>
+      <Text>{validated ? "Password is valid" : "Password is invalid"}</Text>
     </View>
   );
 };
@@ -71,143 +66,99 @@ const Test: React.FC = () => {
 export default Test;
 ```
 
-This library is capable of customizing validation labels as well. This is helpful for multiple languages supported applications
+## Validation Rules
 
-## Possible validation rules
+Below are the possible rules you can use to validate passwords:
 
-#### MIN_LENGTH
+### MIN_LENGTH
 
-Set a minimum characters validation check
+Validates that the password has at least a specified number of characters.
 
-```
+```json
 {
-  key: "MIN_LENGTH",
-  ruleValue: 10,  //  required
-  label: "Minimum characters count is 10"
+  "key": "MIN_LENGTH",
+  "ruleValue": 10,
+  "label": "Minimum length is 10 characters"
 }
 ```
 
-| Key       | Type    | Description                                                                      |
-| --------- | ------- | -------------------------------------------------------------------------------- |
-| ruleValue | Numeric | -                                                                                |
-| label     | String  | Optional. (Default value: "Password contains more than ${ruleValue} characters") |
+### MAX_LENGTH
 
----
+Ensures the password does not exceed a specified number of characters.
 
-#### MAX_LENGTH
-
-Set a maximum characters validation check
-
-```
+```json
 {
-  key: "MAX_LENGTH",
-  ruleValue: 15,  //  required
-  label: "Maximum characters count is 15"
+  "key": "MAX_LENGTH",
+  "ruleValue": 15,
+  "label": "Maximum length is 15 characters"
 }
 ```
 
-| Key       | Type    | Description                                                                              |
-| --------- | ------- | ---------------------------------------------------------------------------------------- |
-| ruleValue | Numeric | -                                                                                        |
-| label     | String  | Optional. (Default value: "Password does not contain more than ${ruleValue} characters") |
+### UPPERCASE_LETTER
 
----
+Validates that the password contains at least one uppercase letter.
 
-#### UPPERCASE_LETTER
-
-Set an uppercase letter availability check
-
-```
+```json
 {
-  key: "UPPERCASE_LETTER",
-  label: "Password contains at least one uppercase letter"
+  "key": "UPPERCASE_LETTER",
+  "label": "Requires at least one uppercase letter"
 }
 ```
 
-| Key   | Type   | Description                                                                  |
-| ----- | ------ | ---------------------------------------------------------------------------- |
-| label | String | Optional. (Default value: "Password contains at least one uppercase letter") |
+### LOWERCASE_LETTER
 
----
+Ensures the password contains at least one lowercase letter.
 
-#### LOWERCASE_LETTER
-
-Set a lowercase letter availability check
-
-```
+```json
 {
-  key: "LOWERCASE_LETTER",
-  label: "Password contains at least one lowercase letter"
+  "key": "LOWERCASE_LETTER",
+  "label": "Requires at least one lowercase letter"
 }
 ```
 
-| Key   | Type   | Description                                                                  |
-| ----- | ------ | ---------------------------------------------------------------------------- |
-| label | String | Optional. (Default value: "Password contains at least one lowercase letter") |
+### NUMERIC
 
----
+Validates that the password contains at least one numeric digit.
 
-#### NUMERIC
-
-Set a numeric character availability check
-
-```
+```json
 {
-  key: "NUMERIC",
-  label: "Password contains at least one numeric"
+  "key": "NUMERIC",
+  "label": "Requires at least one numeric digit"
 }
 ```
 
-| Key   | Type   | Description                                                         |
-| ----- | ------ | ------------------------------------------------------------------- |
-| label | String | Optional. (Default value: "Password contains at least one numeric") |
+### SPECIAL_CHARS
 
----
+Ensures the password contains at least one special character.
 
-#### SPECIAL_CHARS
-
-Set a numeric character availability check
-
-```
+```json
 {
-  key: "SPECIAL_CHARS",
-  label: "Password contains at least one special character"
+  "key": "SPECIAL_CHARS",
+  "label": "Requires at least one special character"
 }
 ```
 
-| Key   | Type   | Description                                                                   |
-| ----- | ------ | ----------------------------------------------------------------------------- |
-| label | String | Optional. (Default value: "Password contains at least one special character") |
+### PASSWORDS_MATCH
 
----
+Checks if the new password and the confirm password match.
 
-#### PASSWORDS_MATCH
-
-Set entered passwords matching validation check
-
-```
+```json
 {
-  key: "PASSWORDS_MATCH",
-  label: "Entered passwords are matching"
+  "key": "PASSWORDS_MATCH",
+  "label": "Passwords must match"
 }
 ```
-
-| Key   | Type   | Description                                                 |
-| ----- | ------ | ----------------------------------------------------------- |
-| label | String | Optional. (Default value: "Entered passwords are matching") |
-
-<br />
-
 ## Props
 
-| Name                      | Type                                                                                     | isRequired | Default Value      | Description                                                        |
-| ------------------------- | ---------------------------------------------------------------------------------------- | ---------- | ------------------ | ------------------------------------------------------------------ |
-| newPassword               | `string`                                                                                 | Yes        | -                  | New password to be passed here                                     |
-| confirmPassword           | `string`                                                                                 | Yes        | -                  | Confirm password to be passed here                                 |
-| onPasswordValidateChanged | `Function`                                                                               | Yes        | -                  | The callback to be executed every time password fields get changed |
-| validationRules           | `[{ key: string (required), label: string, ruleValue: number (depends on the key) }]` | Yes        | -                  | All the rules adding to validate passwords                         |
-| containerStyle            | `ViewStyle`                                                                              | No         | -                  | Styling for container                                              |
-| labelStyle                | `TextStyle`                                                                              | No         | -                  | Styling for labels in validation rows                              |
-| iconStyle                 | `ImageStyle`                                                                             | No         | -                  | Styling for error and success icons                                |
-| iconSuccessSource         | `ImageURISource`                                                                         | No         | Success image icon | Icon to show when validation passes                                |
-| iconErrorSource           | `ImageURISource`                                                                         | No         | Error image icon   | Icon to show when validation fails                                 |
+| Name                    | Type                                | isRequired | Default Value | Description                                                                       |
+|-------------------------|------------------------------------|------------|---------------|-----------------------------------------------------------------------------------|
+| newPassword             | string                              | Yes        | -             | The new password to validate.                                                     |
+| confirmPassword         | string                              | No         | -             | The confirm password to check if it matches the new password.                     |
+| onPasswordValidateChange| Function                            | Yes        | -             | Callback function to execute when validation rules change.                        |
+| validationRules         | [{ key: string, label: string, ruleValue: number }] | Yes | - | A list of rules used to validate passwords.                                      |
+| containerStyle          | ViewStyle                           | No         | -             | Custom styling for the container.                                                 |
+| labelStyle              | { Success: TextStyle, Error: TextStyle } | No   | -             | Custom styling for validation labels, distinguishing success and error states.  |
+| imageStyle              | ImageStyle                          | No         | -             | Custom styling for success/error icons.                                           |
+| imageSource             | { Success: ImageURISource, Error: ImageURISource } | No | - | Custom image sources for success and error icons.                                 |
+| isImage                 | boolean                             | No         | true          | Flag to indicate if validation icons should be images or custom components.       |
+| iconComponent           | { Success: React.ReactNode, Error: React.ReactNode } | No | - | Custom components to use as success/error icons, when not using images.          |
