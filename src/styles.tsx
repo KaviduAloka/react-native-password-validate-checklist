@@ -7,6 +7,7 @@ export default StyleSheet.create({
   field: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 5,
     marginVertical: 3,
     marginHorizontal: 5,
   },
