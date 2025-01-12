@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -8,54 +8,68 @@ import {
   TextStyle,
   ImageStyle,
   ViewStyle,
-} from 'react-native';
-import styles from './styles';
+} from "react-native";
+import styles from "./styles";
 import {
   checkValidationRules,
   debounce,
   getDefaultRuleLabel,
   getValidation,
-} from './utils';
-import {RuleType} from './types';
+} from "./utils";
+import { RuleType } from "./types";
 
 type Props = {
   newPassword: string;
-  confirmPassword: string;
+  confirmPassword?: string;
   onPasswordValidateChange: (data: boolean) => void;
   validationRules: Array<RuleType>;
-  iconSuccessSource?: ImageURISource;
-  iconErrorSource?: ImageURISource;
   containerStyle?: ViewStyle;
-  labelStyle?: TextStyle;
-  iconStyle?: ImageStyle;
+  imageStyle?: ImageStyle;
+  isImage?: boolean;
+  imageSource?: {
+    success: ImageURISource;
+    error: ImageURISource;
+  };
+  labelStyle?: {
+    success?: TextStyle;
+    error?: TextStyle;
+  };
+  iconComponent?: {
+    success: React.ReactNode;
+    error: React.ReactNode;
+  };
 };
 
-type CustomRuleType = RuleType & {validation: boolean; label: string};
+type CustomRuleType = RuleType & {validation: boolean};
 
 const PasswordValidate: React.FC<Props> = ({
   newPassword,
-  confirmPassword,
+  confirmPassword = "",
   onPasswordValidateChange,
   validationRules,
-  iconSuccessSource = require('./assets/success/success.png'),
-  iconErrorSource = require('./assets/error/error.png'),
+  imageSource = {
+    success: require('./assets/success/success.png'),
+    error: require('./assets/error/error.png'),
+  },
   containerStyle = {},
   labelStyle = {},
-  iconStyle = {},
+  imageStyle = {},
+  isImage = true,
+  iconComponent,
 }) => {
   const [rulesList, setRulesList] = useState<Array<CustomRuleType>>([]);
 
   const validatePasswords = (list: Array<CustomRuleType>) => {
     //  check if any field is false
     const allSuccess =
-      list.some(object => object.validation === false) === false;
+      list.some((object) => object.validation === false) === false;
 
     onPasswordValidateChange(allSuccess);
   };
 
   const debounceValidationCheckFunc = useCallback(
     debounce(validatePasswords),
-    [],
+    []
   );
 
   useEffect(() => {
@@ -69,7 +83,7 @@ const PasswordValidate: React.FC<Props> = ({
   const setFieldsList = () => {
     const list: Array<CustomRuleType> = [];
 
-    validationRules.forEach(rule => {
+    validationRules.forEach((rule) => {
       const object = {
         ...rule,
         validation: getValidation(rule, newPassword, confirmPassword),
@@ -84,15 +98,33 @@ const PasswordValidate: React.FC<Props> = ({
     debounceValidationCheckFunc(list);
   };
 
-  const renderItem = ({item}: {item: CustomRuleType}) => (
+  const renderItem = ({ item }: { item: CustomRuleType }) => (
     <View style={styles.field}>
       {item.validation ? (
-        <Image style={[styles.icon, iconStyle]} source={iconSuccessSource} />
+        <>
+          {isImage ? (
+            <Image
+              style={[styles.icon, imageStyle]}
+              source={imageSource.success}
+            />
+          ) : (
+            iconComponent?.success
+          )}
+          <Text style={[styles.label, labelStyle.success]}>{item.label}</Text>
+        </>
       ) : (
-        <Image style={[styles.icon, iconStyle]} source={iconErrorSource} />
+        <>
+          {isImage ? (
+            <Image
+              style={[styles.icon, imageStyle]}
+              source={imageSource.error}
+            />
+          ) : (
+            iconComponent?.error
+          )}
+          <Text style={[styles.label, labelStyle.error]}>{item.label}</Text>
+        </>
       )}
-
-      <Text style={[styles.label, labelStyle]}>{item.label}</Text>
     </View>
   );
 
