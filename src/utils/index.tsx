@@ -30,7 +30,8 @@ export const checkValidationRules = (validationRules: Array<RuleType>) => {
               return true; //  continue loop in `every`
             } else {
               checkPassed = false;
-              console.error(`Add a valid numeric ruleValue for ${rule.key}`);
+              __DEV__ &&
+                console.error(`Add a valid numeric ruleValue for ${rule.key}`);
               return false; //  stop loop in `every`
             }
 
@@ -54,19 +55,19 @@ export const getDefaultRuleLabel = (
 ): string => {
   switch (ruleKey) {
     case 'MIN_LENGTH':
-      return `Password contains more than ${ruleValue} characters`;
+      return `Minimum ${ruleValue} characters`;
     case 'MAX_LENGTH':
-      return `Password does not contain more than ${ruleValue} characters`;
-    case 'UPPERCASE_LETTER':
-      return 'Password contains at least one uppercase letter';
+      return `Maximum ${ruleValue} characters`;
     case 'LOWERCASE_LETTER':
-      return 'Password contains at least one lowercase letter';
+      return 'Minimum 1 lowercase letter';
+    case 'UPPERCASE_LETTER':
+      return 'Maximum 1 uppercase letter';
     case 'NUMERIC':
-      return 'Password contains at least one numeric';
+      return 'Minimum 1 numeric character';
     case 'SPECIAL_CHARS':
-      return 'Password contains at least one special character';
+      return 'Minimum 1 special character';
     case 'PASSWORDS_MATCH':
-      return 'Entered passwords are matching';
+      return 'Passwords do not match';
   }
 };
 
@@ -77,9 +78,15 @@ export const getValidation = (
 ): boolean => {
   switch (rule.key) {
     case 'MIN_LENGTH':
-      return newPassword.length >= rule.ruleValue;
+      return (
+        rule.ruleValue !== undefined && newPassword.length >= rule.ruleValue
+      );
     case 'MAX_LENGTH':
-      return newPassword.length > 0 && newPassword.length <= rule.ruleValue;
+      return (
+        rule.ruleValue !== undefined &&
+        newPassword.length > 0 &&
+        newPassword.length <= rule.ruleValue
+      );
     case 'LOWERCASE_LETTER':
       return /[a-z]/.test(newPassword);
     case 'UPPERCASE_LETTER':

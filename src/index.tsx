@@ -27,20 +27,20 @@ type Props = {
   imageStyle?: ImageStyle;
   isImage?: boolean;
   imageSource?: {
-    Success?: ImageURISource;
-    Error?: ImageURISource;
+    success: ImageURISource;
+    error: ImageURISource;
   };
   labelStyle?: {
-    Success?: TextStyle;
-    Error?: TextStyle;
+    success?: TextStyle;
+    error?: TextStyle;
   };
   iconComponent?: {
-    Success?: React.ReactNode;
-    Error?: React.ReactNode;
+    success: React.ReactNode;
+    error: React.ReactNode;
   };
 };
 
-type CustomRuleType = RuleType & { validation: boolean; label: string };
+type CustomRuleType = RuleType & {validation: boolean};
 
 const PasswordValidate: React.FC<Props> = ({
   newPassword,
@@ -48,14 +48,14 @@ const PasswordValidate: React.FC<Props> = ({
   onPasswordValidateChange,
   validationRules,
   imageSource = {
-    Success: require("./assets/success/success.png"),
-    Error: require("./assets/error/error.png"),
+    success: require('./assets/success/success.png'),
+    error: require('./assets/error/error.png'),
   },
   containerStyle = {},
   labelStyle = {},
   imageStyle = {},
   isImage = true,
-  iconComponent = {},
+  iconComponent,
 }) => {
   const [rulesList, setRulesList] = useState<Array<CustomRuleType>>([]);
 
@@ -105,24 +105,24 @@ const PasswordValidate: React.FC<Props> = ({
           {isImage ? (
             <Image
               style={[styles.icon, imageStyle]}
-              source={imageSource.Success}
+              source={imageSource.success}
             />
           ) : (
-            iconComponent.Success
+            iconComponent?.success
           )}
-          <Text style={[styles.label, labelStyle.Success]}>{item.label}</Text>
+          <Text style={[styles.label, labelStyle.success]}>{item.label}</Text>
         </>
       ) : (
         <>
           {isImage ? (
             <Image
               style={[styles.icon, imageStyle]}
-              source={imageSource.Error}
+              source={imageSource.error}
             />
           ) : (
-            iconComponent.Error
+            iconComponent?.error
           )}
-          <Text style={[styles.label, labelStyle.Error]}>{item.label}</Text>
+          <Text style={[styles.label, labelStyle.error]}>{item.label}</Text>
         </>
       )}
     </View>

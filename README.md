@@ -48,16 +48,15 @@ const Test = () => {
         ]}
         onPasswordValidateChange={setValidated}
         imageSource={{
-          Success: require("./assets/success/success.png"),
-          Error: require("./assets/error/error.png"),
+          success: require("./assets/success/success.png"),
+          error: require("./assets/error/error.png"),
         }}
         isImage={true}
         iconComponent={{
-          Success: <Text>✔</Text>,
-          Error: <Text>✖</Text>,
+          success: <Text>✔</Text>,
+          error: <Text>✖</Text>,
         }}
       />
-
       <Text>{validated ? "Password is valid" : "Password is invalid"}</Text>
     </View>
   );
@@ -77,7 +76,7 @@ Validates that the password has at least a specified number of characters.
 ```json
 {
   "key": "MIN_LENGTH",
-  "ruleValue": 10,
+  "ruleValue": 10,  //  required
   "label": "Minimum length is 10 characters"
 }
 ```
@@ -89,7 +88,7 @@ Ensures the password does not exceed a specified number of characters.
 ```json
 {
   "key": "MAX_LENGTH",
-  "ruleValue": 15,
+  "ruleValue": 15,  //  required
   "label": "Maximum length is 15 characters"
 }
 ```
@@ -157,8 +156,8 @@ Checks if the new password and the confirm password match.
 | onPasswordValidateChange| Function                            | Yes        | -             | Callback function to execute when validation rules change.                        |
 | validationRules         | [{ key: string, label: string, ruleValue: number }] | Yes | - | A list of rules used to validate passwords.                                      |
 | containerStyle          | ViewStyle                           | No         | -             | Custom styling for the container.                                                 |
-| labelStyle              | { Success: TextStyle, Error: TextStyle } | No   | -             | Custom styling for validation labels, distinguishing success and error states.  |
+| labelStyle              | { success: TextStyle, error: TextStyle } | No   | -             | Custom styling for validation labels, distinguishing success and error states.  |
 | imageStyle              | ImageStyle                          | No         | -             | Custom styling for success/error icons.                                           |
-| imageSource             | { Success: ImageURISource, Error: ImageURISource } | No | - | Custom image sources for success and error icons.                                 |
+| imageSource             | { success: ImageURISource, error: ImageURISource } | No | - | Custom image sources for success and error icons.                                 |
 | isImage                 | boolean                             | No         | true          | Flag to indicate if validation icons should be images or custom components.       |
-| iconComponent           | { Success: React.ReactNode, Error: React.ReactNode } | No | - | Custom components to use as success/error icons, when not using images.          |
+| iconComponent           | { success: React.ReactNode, error: React.ReactNode } | No | - | Custom components to use as success/error icons, when not using images.          |
