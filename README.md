@@ -18,7 +18,7 @@ import React, { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import PasswordValidate from "react-native-password-validate-checklist";
 
-const Test = () => {
+const PasswordCheckComponent = () => {
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
   const [validated, setValidated] = useState(false);
@@ -77,7 +77,7 @@ Validates that the password has at least a specified number of characters.
 {
   "key": "MIN_LENGTH",
   "ruleValue": 10,  //  required
-  "label": "Minimum length is 10 characters"
+  "label": "Minimum 10 characters"
 }
 ```
 
@@ -89,7 +89,7 @@ Ensures the password does not exceed a specified number of characters.
 {
   "key": "MAX_LENGTH",
   "ruleValue": 15,  //  required
-  "label": "Maximum length is 15 characters"
+  "label": "Maximum 15 characters"
 }
 ```
 
@@ -100,7 +100,7 @@ Validates that the password contains at least one uppercase letter.
 ```json
 {
   "key": "UPPERCASE_LETTER",
-  "label": "Requires at least one uppercase letter"
+  "label": "Minimum 1 uppercase letter"
 }
 ```
 
@@ -111,7 +111,7 @@ Ensures the password contains at least one lowercase letter.
 ```json
 {
   "key": "LOWERCASE_LETTER",
-  "label": "Requires at least one lowercase letter"
+  "label": "Minimum 1 lowercase letter"
 }
 ```
 
@@ -133,7 +133,7 @@ Ensures the password contains at least one special character.
 ```json
 {
   "key": "SPECIAL_CHARS",
-  "label": "Requires at least one special character"
+  "label": "Minimum 1 special character"
 }
 ```
 

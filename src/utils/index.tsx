@@ -61,13 +61,13 @@ export const getDefaultRuleLabel = (
     case 'LOWERCASE_LETTER':
       return 'Minimum 1 lowercase letter';
     case 'UPPERCASE_LETTER':
-      return 'Maximum 1 uppercase letter';
+      return 'Minimum 1 uppercase letter';
     case 'NUMERIC':
       return 'Minimum 1 numeric character';
     case 'SPECIAL_CHARS':
       return 'Minimum 1 special character';
     case 'PASSWORDS_MATCH':
-      return 'Passwords do not match';
+      return 'Passwords must match';
   }
 };
 
