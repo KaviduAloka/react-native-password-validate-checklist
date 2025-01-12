@@ -1,6 +1,6 @@
 {
   "name": "react-native-password-validate-checklist",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Customized password validating checklist",
   "main": "src/index.tsx",
   "scripts": {
