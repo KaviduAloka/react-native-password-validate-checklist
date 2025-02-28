@@ -1,6 +1,6 @@
 {
   "name": "react-native-password-validate-checklist",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Customized password validating checklist",
   "main": "src/index.tsx",
   "scripts": {
@@ -11,13 +11,24 @@
     "url": "git+ssh://git@github.com/KaviduAloka/react-native-password-validate-checklist.git"
   },
   "keywords": [
-    "react-native",
-    "android",
+    "password validator",
+    "password validations",
+    "password-validation",
+    "password-checklist",
+    "password-strength",
+    "react-native-password",
+    "password-rules",
+    "secure-password",
+    "password-validator",
+    "react-native-security",
+    "form-validation",
+    "react-native-component",
+    "react-native-library",
+    "authentication",
+    "react-native-auth",
     "ios",
-    "password",
-    "validation",
-    "validating",
-    "checklist"
+    "android",
+    "cross-platform"
   ],
   "author": "KaviduAloka",
   "license": "ISC",
